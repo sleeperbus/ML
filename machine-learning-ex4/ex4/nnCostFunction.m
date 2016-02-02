@@ -39,6 +39,25 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 %
+
+% X 에 dummy feature를 더한다.
+X = [ones(m, 1) X];
+
+% y 는 1부터 10까지 들어온다. 10인 경우는 0을 나타낸다. y 를 vector 로 변환되어야 한다. 
+% y = m * num_labels
+new_y = zeros(m, num_labels);
+for i = 1:num_labels
+	num_list = find(y == i);
+	new_y(num_list, i) = 1;
+end;
+y = new_y;
+
+% 입력된 Theta 를 사용해 이론값을 구한다. 
+% result = m * num_labels
+result =  sigmoid([ones(m, 1) (sigmoid(Theta1 * X'))'] * Theta2');
+J = -1 * (sum(sum(y .* log(result) + (1 - y) .* log(1 - result))) / m);
+
+
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
