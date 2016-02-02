@@ -57,6 +57,15 @@ y = new_y;
 result =  sigmoid([ones(m, 1) (sigmoid(Theta1 * X'))'] * Theta2');
 J = -1 * (sum(sum(y .* log(result) + (1 - y) .* log(1 - result))) / m);
 
+% regularization 을 수행한다. 
+t_theta1 = Theta1(:, 2:end);
+t_theta2 = Theta2(:, 2:end);
+J = J + ...
+	( ...
+		sum((t_theta1 * t_theta1' .* eye(size(t_theta1, 1)))(:)) + ...
+		sum((t_theta2 * t_theta2' .* eye(size(t_theta2, 1)))(:))
+	) * lambda /(2*m);
+
 
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
