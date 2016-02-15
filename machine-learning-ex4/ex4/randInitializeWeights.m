@@ -10,6 +10,7 @@ function W = randInitializeWeights(L_in, L_out)
 %
 
 % You need to return the following variables correctly 
+% 여기서 1을 더하는 것은 bias unit
 W = zeros(L_out, 1 + L_in);
 
 % ====================== YOUR CODE HERE ======================
@@ -19,14 +20,10 @@ W = zeros(L_out, 1 + L_in);
 % Note: The first row of W corresponds to the parameters for the bias units
 %
 
-
-
-
-
-
-
-
-
+% 괜찮은 e 를 구하는 공식 
+% e = sqrt(6) / sqrt(Lin + Lout)
+epsilon_init = sqrt(6) / sqrt(L_in + L_out);
+W = rand(L_out, 1 + L_in) * 2 * epsilon_init - epsilon_init;
 % =========================================================================
 
 end

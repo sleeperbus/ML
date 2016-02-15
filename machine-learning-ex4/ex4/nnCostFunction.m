@@ -82,6 +82,15 @@ J = J + ...
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+
+% 우선은 loop로 backprop 을 구현
+for t = 1:m 
+	a_1 = X(1, :);
+end	
+
+
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
