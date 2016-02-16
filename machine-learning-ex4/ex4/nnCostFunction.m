@@ -84,9 +84,47 @@ J = J + ...
 %
 
 % 우선은 loop로 backprop 을 구현
+D_1 = zeros(size(Theta1));
+D_2 = zeros(size(Theta2));
 for t = 1:m 
-	a_1 = X(1, :);
+	% forward pass
+	% (10 x 1)
+	y_vec = y(t, :)';
+
+	% (401 x 1)
+	a_1 = X(t, :)';
+
+	% (25 x 401) * (401 x 1) = (25 x 1)
+	z_2 = Theta1 * a_1;
+	% (26 x 1)
+	z_2 = [1; z_2];
+
+	% (26 x 1)
+	a_2 = sigmoid(z_2);
+
+	% (10 x 26) * (26 x 1) = (10 x 1)
+	z_3 = Theta2 * a_2;
+
+	% (10 x 1)	
+	a_3 = sigmoid(z_3);
+
+	% 여기서부터 backprop
+	% (10 x 1)
+	d_3 = a_3 - y_vec;
+
+	% (10 x 26)' * (10 x 1) .* (26 x 1) = (26 x 1)
+	d_2 = Theta2' * d_3 .* sigmoidGradient(z_2);
+	% (25 x 1)
+	d_2 = d_2(2:end);
+
+	% (25 x 1) * (401 x 1)' = (25 x 401)
+	D_1 = D_1 + d_2 * a_1';
+
+	% (10 x 1) * (26 x 1)' = (10 x 26)
+	D_2 = D_2 + d_3 * a_2';
 end	
+Theta1_grad = 1/m * D_1;
+Theta2_grad = 1/m * D_2;
 
 
 
