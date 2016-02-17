@@ -16,11 +16,21 @@ function [J grad] = nnCostFunction(nn_params, ...
 
 % Reshape nn_params back into the parameters Theta1 and Theta2, the weight matrices
 % for our 2 layer neural network
+
+
+
 Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
                  hidden_layer_size, (input_layer_size + 1));
 
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
+
+%fprintf('\nSize of X: (%d x %d)\n', size(X, 1), size(X, 2));
+%fprintf('\nSize of y: (%d x %d)\n', size(y, 1), size(y, 2));
+%fprintf('\nSize of Theta1: (%d x %d)\n', size(Theta1, 1), size(Theta1, 2));
+%fprintf('\nSize of Theta2: (%d x %d)\n', size(Theta2, 1), size(Theta2, 2));
+
+
 
 % Setup some useful variables
 m = size(X, 1);
@@ -86,65 +96,83 @@ J = J + ...
 % 우선은 loop로 backprop 을 구현
 D_1 = zeros(size(Theta1));
 D_2 = zeros(size(Theta2));
-for t = 1:m 
-	% forward pass
-	% (10 x 1)
-	y_vec = y(t, :)';
+% for t = 1:m 
+% 	% forward pass
+% 	% (10 x 1)
+% 	y_vec = y(t, :)';
 
-	% (401 x 1)
-	a_1 = X(t, :)';
+% 	% (401 x 1)
+% 	a_1 = X(t, :)';
 
-	% (25 x 401) * (401 x 1) = (25 x 1)
-	z_2 = Theta1 * a_1;
+% 	% (25 x 401) * (401 x 1) = (25 x 1)
+% 	z_2 = Theta1 * a_1;
 
-	% (26 x 1)
-	a_2 = [1; sigmoid(z_2)];
+% 	% (26 x 1)
+% 	a_2 = [1; sigmoid(z_2)];
 
-	% (10 x 26) * (26 x 1) = (10 x 1)
-	z_3 = Theta2 * a_2;
+% 	% (10 x 26) * (26 x 1) = (10 x 1)
+% 	z_3 = Theta2 * a_2;
 
-	% (10 x 1)	
-	a_3 = sigmoid(z_3);
+% 	% (10 x 1)	
+% 	a_3 = sigmoid(z_3);
 
-	% 여기서부터 backprop
-	% (10 x 1)
-	d_3 = a_3 - y_vec;
+% 	% 여기서부터 backprop
+% 	% (10 x 1)
+% 	d_3 = a_3 - y_vec;
 
-	% (10 x 26)' * (10 x 1) .* (26 x 1) = (25 x 1)
-	d_2 = (Theta2' * d_3)(2:end) .* sigmoidGradient(z_2);
+% 	% (10 x 26)' * (10 x 1) .* (26 x 1) = (25 x 1)
+% 	d_2 = (Theta2' * d_3)(2:end) .* sigmoidGradient(z_2);
 
-	% (25 x 1) * (401 x 1)' = (25 x 401)
-	D_1 = D_1 + d_2 * a_1';
+% 	% (25 x 1) * (401 x 1)' = (25 x 401)
+% 	D_1 = D_1 + d_2 * a_1';
 
-	% (10 x 1) * (26 x 1)' = (10 x 26)
-	D_2 = D_2 + d_3 * a_2';
-end	
-Theta1_grad = 1/m * D_1;
-Theta2_grad = 1/m * D_2;
+% 	% (10 x 1) * (26 x 1)' = (10 x 26)
+% 	D_2 = D_2 + d_3 * a_2';
+% end	
+% Theta1_grad = 1/m * D_1;
+% Theta2_grad = 1/m * D_2;
 
 
-% 여기서부터는 matrix 연산으로 구현한 backprop
+% 여기서부터는 matrix 연산으로 구현한 NN
+
+% 처음은 역시 feed forward부터 시작한다. 
 % (5000 x 401)
 a_1 = X;
+%fprintf('\nSize of a_1: (%d x %d)\n', size(a_1, 1), size(a_1, 2));
 
 % (5000 x 401) *  (401 x 25) = (5000 x 25)
 z_2 = a_1 * Theta1';
+%fprintf('\nSize of z_2: (%d x %d)\n', size(z_2, 1), size(z_2, 2));
 
 % (5000 x 26) 
 a_2 = [ones(m,1) sigmoid(z_2)]; 
+%fprintf('\nSize of a_2: (%d x %d)\n', size(a_2, 1), size(a_2, 2));
 
 % (5000 x 26) * (26 * 10) = (5000 x 10)
 z_3 = a_2 * Theta2';
+%fprintf('\nSize of z_3: (%d x %d)\n', size(z_3, 1), size(z_3, 2));
 
 % (5000 x 10)
 a_3 = sigmoid(z_3);
+%fprintf('\nSize of a_3: (%d x %d)\n', size(a_3, 1), size(a_3, 2));
 
+% 여기서부터는 backprop
 % (5000 x 10)
 d_3 = a_3 .- y;
+%fprintf('\nSize of d_3: (%d x %d)\n', size(d_3, 1), size(d_3, 2));
 
-% 
-d_2 = 
+% ((5000 x 10) * (10 x 26))(:, 2:end) .* (5000 x 25) = (5000 x 25)
+d_2 = ((d_3 * Theta2))(:, 2:end) .* sigmoidGradient(z_2);
+%fprintf('\nSize of d_3: (%d x %d)\n', size(d_3, 1), size(d_3, 2));
 
+% (5000 x 25)' * (5000 x 401) = (25 x 401)
+D_1 = d_2' * a_1;
+
+% (5000 x 10)' * (5000 x 26) = (10 x 26)
+D_2 = d_3' * a_2;
+
+Theta1_grad = 1/m * D_1;
+Theta2_grad = 1/m * D_2;
 
 
 
