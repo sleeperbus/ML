@@ -96,11 +96,9 @@ for t = 1:m
 
 	% (25 x 401) * (401 x 1) = (25 x 1)
 	z_2 = Theta1 * a_1;
-	% (26 x 1)
-	z_2 = [1; z_2];
 
 	% (26 x 1)
-	a_2 = sigmoid(z_2);
+	a_2 = [1; sigmoid(z_2)];
 
 	% (10 x 26) * (26 x 1) = (10 x 1)
 	z_3 = Theta2 * a_2;
@@ -112,10 +110,8 @@ for t = 1:m
 	% (10 x 1)
 	d_3 = a_3 - y_vec;
 
-	% (10 x 26)' * (10 x 1) .* (26 x 1) = (26 x 1)
-	d_2 = Theta2' * d_3 .* sigmoidGradient(z_2);
-	% (25 x 1)
-	d_2 = d_2(2:end);
+	% (10 x 26)' * (10 x 1) .* (26 x 1) = (25 x 1)
+	d_2 = (Theta2' * d_3)(2:end) .* sigmoidGradient(z_2);
 
 	% (25 x 1) * (401 x 1)' = (25 x 401)
 	D_1 = D_1 + d_2 * a_1';
@@ -125,6 +121,29 @@ for t = 1:m
 end	
 Theta1_grad = 1/m * D_1;
 Theta2_grad = 1/m * D_2;
+
+
+% 여기서부터는 matrix 연산으로 구현한 backprop
+% (5000 x 401)
+a_1 = X;
+
+% (5000 x 401) *  (401 x 25) = (5000 x 25)
+z_2 = a_1 * Theta1';
+
+% (5000 x 26) 
+a_2 = [ones(m,1) sigmoid(z_2)]; 
+
+% (5000 x 26) * (26 * 10) = (5000 x 10)
+z_3 = a_2 * Theta2';
+
+% (5000 x 10)
+a_3 = sigmoid(z_3);
+
+% (5000 x 10)
+d_3 = a_3 .- y;
+
+% 
+d_2 = 
 
 
 
