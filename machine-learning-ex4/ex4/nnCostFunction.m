@@ -184,7 +184,19 @@ Theta2_grad = 1/m * D_2;
 %               and Theta2_grad from Part 2.
 %
 
+% Regularization 을 수행한다. Theta1, Theta2 의 첫 번째 컬럼들은 bias term 을 위한 것이므로
+% 이 작업을 하지 않는다. 
 
+reg_1 = ones(size(Theta1));
+reg_1(:, 1) = 0;
+reg_1 = (reg_1 .* Theta1) * lambda / m;
+
+reg_2 = ones(size(Theta2));
+reg_2(:, 1) = 0;
+reg_2 = (reg_2 .* Theta2) * lambda / m;
+
+Theta1_grad = Theta1_grad + reg_1;
+Theta2_grad = Theta2_grad + reg_2;
 
 
 
