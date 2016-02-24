@@ -19,15 +19,9 @@ grad = zeros(size(theta));
 %               You should set J to the cost and grad to the gradient.
 %
 
-
-
-
-
-
-
-
-
-
+% X 는 bias feature 가 붙어서 들어온다. 
+% lamda 를 사용해서 regularize 를 할 때 bias column 은 제외해야 한다. 
+J = sum((X * theta - y).^2)/(2 * m) + (theta' * theta - theta(1)^2) * lamda / (2*m);
 
 
 % =========================================================================
