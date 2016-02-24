@@ -6,7 +6,7 @@ function [J, grad] = linearRegCostFunction(X, y, theta, lambda)
 %   data points in X and y. Returns the cost in J and the gradient in grad
 
 % Initialize some useful values
-m = length(y); % number of training examples
+m = length(y); % number of training examples 
 
 % You need to return the following variables correctly 
 J = 0;
@@ -21,7 +21,11 @@ grad = zeros(size(theta));
 
 % X 는 bias feature 가 붙어서 들어온다. 
 % lamda 를 사용해서 regularize 를 할 때 bias column 은 제외해야 한다. 
-J = sum((X * theta - y).^2)/(2 * m) + (theta' * theta - theta(1)^2) * lamda / (2*m);
+
+mask = ones(size(theta));
+mask(1) = 0;
+J = sum((X * theta - y).^2)/(2 * m) + (theta' * theta - theta(1)^2) * lambda / (2*m);
+grad = (sum((X * theta - y) .* X)/m)' + lambda * (mask .* theta) / m;
 
 
 % =========================================================================
