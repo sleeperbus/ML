@@ -52,12 +52,20 @@ error_val   = zeros(m, 1);
 %
 
 % ---------------------- Sample Solution ----------------------
+% training 에 사용되는 데이터의 개수를 1부터 시작해서 size(X, 1) 까지 늘린다. 
+% 즉 size(X, 1) 만큼의 theta 들이 생성되게 된다. 
+% 이것들을 이용해서 train error cost 와 cross-validation error cost 를 구한다. 
+% train error 를 구할 때는 해당 theta 가 구해진 size 에 대해서만 구하고 
+% cv error 를 구할 때는 전체 cv set 에 대해서 구해야 한다. 
+% cost 를 구할 때는 function 에 넘기는 lambda 를 0으로 설정해야 한다. 
 
-
-
-
-
-
+for i = 1:m 
+	theta = trainLinearReg(X(1:i, :), y(1:i), lambda);	
+	trainError = linearRegCostFunction(X(1:i, :), y(1:i), theta, 0);
+	cvError = linearRegCostFunction(Xval, yval, theta, 0);
+	error_train(i) = trainError;
+	error_val(i) = cvError;
+end
 
 % -------------------------------------------------------------
 
