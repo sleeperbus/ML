@@ -36,8 +36,14 @@ error_val = zeros(length(lambda_vec), 1);
 %           ....
 %           
 %       end
-%
-%
+
+% lambda 값을 변경하면서 train error 와 cross validation error 를 관찰한다. 
+for i = 1:size(lambda_vec)
+	% 지정된 lambda 를 사용하여 theta 를 구한다. 
+	theta = trainLinearReg(X, y, lambda_vec(i));
+	error_train(i) = linearRegCostFunction(X, y, theta, 0);
+	error_val(i) = linearRegCostFunction(Xval, yval, theta, 0);
+end; 
 
 
 

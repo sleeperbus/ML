@@ -218,3 +218,19 @@ end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+
+
+% 여기서부터는 추가적인 부분 
+% test set 에 대해서 에러를 구해보자. 
+close all;
+lambda = 3;
+theta = trainLinearReg(X_poly, y, lambda);
+plot(X, y, 'rx');
+plotFit(min(X), max(X), mu, sigma, theta, p);
+hold on;
+plot(Xtest, ytest, 'bx');
+hold off;
+axis([-60 60 0, 150]);
+error_test = linearRegCostFunction(X_poly_test, ytest, theta, 0);
+
