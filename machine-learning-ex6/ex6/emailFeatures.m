@@ -48,13 +48,15 @@ x = zeros(n, 1);
 %
 %
 
-
-
-
-
-
-
-
+% word_indices 는 이메일의 각 단어들이 숫자로 치환된 형태이다.
+% 1 ~ 1899 까지의 features 중에서 word_indices 에 존재하는 위치는 1이 되고 
+% 존재하지 않으면 0이 된다. 
+word_indices = sort(word_indices);
+for i = 1:n 
+	if (lookup(word_indices, i, 'm') ~= 0) 
+		x(i) = 1;
+	endif
+end
 % =========================================================================
     
 
