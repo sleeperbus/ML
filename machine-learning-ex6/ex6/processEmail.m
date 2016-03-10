@@ -97,14 +97,13 @@ while ~isempty(email_contents)
     %       str2). It will return 1 only if the two strings are equivalent.
     %
 
+    % str 이 vocabList 에 있는지 확인한다. 해당 단어가 리스트에 존재한다면 몇 번째 단어인지 
+    % word_indices  에 기록하고, 매칭되는 단어가 없다면 넘어간다. 
 
-
-
-
-
-
-
-
+    index = lookup(vocabList, str, 'm'); 
+    if (index ~= 0)
+        word_indices = [word_indices; index];
+    endif
 
     % =============================================================
 
