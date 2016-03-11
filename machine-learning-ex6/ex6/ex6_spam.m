@@ -70,6 +70,7 @@ load('spamTrain.mat');
 fprintf('\nTraining Linear SVM (Spam Classification)\n')
 fprintf('(this may take 1 to 2 minutes) ...\n')
 
+% features 사이즈가 1899, n 이 크기 때문에 linear kernel 을 사용한 듯  
 C = 0.1;
 model = svmTrain(X, y, C, @linearKernel);
 
