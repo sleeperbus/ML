@@ -52,7 +52,7 @@ email_contents = regexprep(email_contents, '[$]+', 'dollar');
 fprintf('\n==== Processed Email ====\n\n');
 
 % Process file
-l = 0;
+ l = 0;
 
 while ~isempty(email_contents)
 
