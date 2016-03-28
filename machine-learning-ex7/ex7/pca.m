@@ -20,12 +20,11 @@ S = zeros(n);
 %       number of examples).
 %
 
+% covariance matrix 를 구한다. 
+sigma = (X' * X) / m;
 
-
-
-
-
-
+% eigenvector 를 구한다. 
+[U, S, V] = svd(sigma);
 % =========================================================================
 
 end
