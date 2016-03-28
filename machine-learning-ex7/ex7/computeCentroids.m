@@ -28,7 +28,7 @@ centroids = zeros(K, n);
 
 for i = 1:K
 	subX = X(find(idx == i), :);
-	centroids(i, :) = sum(subX)/length(subX);
+	centroids(i, :) = sum(subX)/size(subX, 1);
 end
 
 % =============================================================
