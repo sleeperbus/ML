@@ -7,6 +7,8 @@ function Z = projectData(X, U, K)
 %
 
 % You need to return the following variables correctly.
+
+% K 차원으로 축소된 결과값
 Z = zeros(size(X, 1), K);
 
 % ====================== YOUR CODE HERE ======================
@@ -18,9 +20,9 @@ Z = zeros(size(X, 1), K);
 %                    projection_k = x' * U(:, k);
 %
 
-
-
-
+% Z = X * U(:, K);
+Z = U(:, K)' * X';
+Z = Z';
 % =============================================================
 
 end
