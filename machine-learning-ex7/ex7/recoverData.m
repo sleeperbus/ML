@@ -6,7 +6,10 @@ function X_rec = recoverData(Z, U, K)
 %   approximate reconstruction in X_rec.
 %
 
+% 압축된 데이터에서 원본 데이터의 근사값으로 북구한다. 
+
 % You need to return the following variables correctly.
+% (m x n)
 X_rec = zeros(size(Z, 1), size(U, 1));
 
 % ====================== YOUR CODE HERE ======================
@@ -21,8 +24,7 @@ X_rec = zeros(size(Z, 1), size(U, 1));
 %               Notice that U(j, 1:K) is a row vector.
 %               
 
-
-
+X_rec = (U(:, 1:K) * Z')';
 % =============================================================
 
 end
