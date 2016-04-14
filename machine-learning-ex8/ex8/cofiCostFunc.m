@@ -43,11 +43,8 @@ Theta_grad = zeros(size(Theta));
 % R(i, j) = 1 인 것들을 대상으로 J 를 구해야 한다. 
 J = sum(sum((((X * Theta') - Y) .* R) .^ 2))/2;
 
-
-
-
-
-
+X_grad  = ((X * Theta') .* R) * Theta;
+Theta_grad = ((X * Theta') .* R)' * X;
 
 % =============================================================
 
