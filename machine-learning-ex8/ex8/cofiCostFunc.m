@@ -41,10 +41,11 @@ Theta_grad = zeros(size(Theta));
 %
 
 % R(i, j) = 1 인 것들을 대상으로 J 를 구해야 한다. 
-J = sum(sum((((X * Theta') - Y) .* R) .^ 2))/2;
 
-X_grad  = ((X * Theta') .* R) * Theta;
-Theta_grad = ((X * Theta') .* R)' * X;
+J = sum(sum((((X * Theta') - Y) .* R) .^ 2))/2 + sum(sum((Theta * Theta') .* eye(num_users))) * lambda / 2  + sum(sum((X * X') .* eye(num_movies))) * lambda / 2;
+
+X_grad  = ((X * Theta' - Y) .* R) * Theta + lambda * X;
+Theta_grad = ((X * Theta' - Y) .* R)' * X + lambda * Theta;
 
 % =============================================================
 
